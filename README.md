@@ -40,4 +40,4 @@ To run this project:
 
 ## Project Structure
 
-The main application code is located in the `lib` directory. Key files include:
+The main application code is located in the `lib` directory.
