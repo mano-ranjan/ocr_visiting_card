@@ -16,7 +16,6 @@ Future<String?> getImageFromCamera() async {
   }
 
   if (!isCameraGranted) {
-    // Have not permission to camera
     return null;
   }
 
@@ -28,7 +27,6 @@ Future<String?> getImageFromCamera() async {
   bool success = false;
 
   try {
-    //Make sure to await the call to detectEdge.
     success = await EdgeDetection.detectEdge(
       imagePath,
       canUseGallery: true,
@@ -43,7 +41,7 @@ Future<String?> getImageFromCamera() async {
   }
 
   // if (!mounted) return null;
-  return imagePath;
+  return success ? imagePath : null;
 }
 
 Future<String?> getImageFromGallery(BuildContext context) async {
@@ -53,7 +51,6 @@ Future<String?> getImageFromGallery(BuildContext context) async {
 
   bool success = false;
   try {
-    //Make sure to await the call to detectEdgeFromGallery.
     success = await EdgeDetection.detectEdgeFromGallery(
       imagePath,
       androidCropTitle: 'Crop', // use custom localizations for android
@@ -64,7 +61,7 @@ Future<String?> getImageFromGallery(BuildContext context) async {
     print(e);
   }
 
-  return imagePath;
+  return success ? imagePath : null;
 }
 
 Widget extractTextView(String? imagePath) {
@@ -74,7 +71,13 @@ Widget extractTextView(String? imagePath) {
   return FutureBuilder(
     future: extractText(File(imagePath)),
     builder: (context, snapshot) {
-      return SelectableText(snapshot.data ?? "");
+      return SelectableText(
+        snapshot.data ?? "",
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+        ),
+      );
     },
   );
 }
